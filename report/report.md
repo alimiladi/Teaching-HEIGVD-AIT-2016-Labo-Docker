@@ -2,18 +2,18 @@
 #### Authors : Ali Miladi & Dany Tchente
 
 ## Table of contents
-|*Section number*|*Chapter*				  		 |
-|----------------|-------------------------------|
-|1				 |[*Introduction*](#Intro)		 |
-|2				 |[*Task 0*](#Task0)      		 |
-|3				 |[*Task 1*](#Task1)      		 |
-|4				 |[*Task 2*](#Task2)      		 |
-|5				 |[*Task 3*](#Task3)      		 |
-|6				 |[*Task 4*](#Task4)      		 |
-|7				 |[*Task 5*](#Task5)      		 |
-|8				 |[*Task 6*](#Task6)      		 |
-|9				 |[*Difficulties*](#Difficulties)|
-|10				 |[*Conclusion*](#Conclusion)    |
+|*Section #*|*Chapter*				  		|
+|-----------|-------------------------------|
+|1			|[*Introduction*](#Intro)		|
+|2			|[*Task 0*](#Task0)      		|
+|3			|[*Task 1*](#Task1)      		|
+|4			|[*Task 2*](#Task2)      		|
+|5			|[*Task 3*](#Task3)      		|
+|6			|[*Task 4*](#Task4)      		|
+|7			|[*Task 5*](#Task5)      		|
+|8			|[*Task 6*](#Task6)      		|
+|9			|[*Difficulties*](#Difficulties)|
+|10			|[*Conclusion*](#Conclusion)    |
 
 ## <a name="Intro"></a>1.	Introduction
 In this lab we will deploy a web application in a two-tier fashion similarily to what we have done in the [*previous lab*](https://github.com/alimiladi/Teaching-HEIGVD-AIT-2015-Labo-Load-Balancing). 
