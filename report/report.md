@@ -14,7 +14,6 @@
 |8				 |[*Task 6*](#Task6)      		 |
 |9				 |[*Difficulties*](#Difficulties)|
 |10				 |[*Conclusion*](#Conclusion)    |
-|----------------|-------------------------------|
 
 ## <a name="Intro"></a>1.	Introduction
 In this lab we will deploy a web application in a two-tier fashion similarily to what we have done in the [*previous lab*](https://github.com/alimiladi/Teaching-HEIGVD-AIT-2015-Labo-Load-Balancing). 
@@ -23,7 +22,9 @@ We will use an HAProxy load balancer based on the 1.5 version.
 For this lab, we use this [*github repo*](https://github.com/alimiladi/Teaching-HEIGVD-AIT-2016-Labo-Docker). 
 The goal of this lab is to actually add and remove nodes without having to rebuild the HAProxy image. 
 Through the different steps of the lab, we will comment the realised manipulations, provide explanations for them and probably sceenshots in order to be the clearest possible.
+
 ## <a name="Task0"></a>2.	Task 0 : Identify issues and install the tools
+
 ## <a name="Task1"></a>3.	Task 1 : Add a process supervisor to run several processes
 ## <a name="Task2"></a>4.	Task 2 : Add a tool to manage membership in the web server cluster
 ## <a name="Task3"></a>5.	Task 3 : React to membership changes
