@@ -33,6 +33,27 @@ Through the different steps of the lab, we will comment the realised manipulatio
 	The reason behind this is the fact that we don't have yet an automated handling of the new arrived/removed nodes and instead we have to do this manually by modifying the config file of HAProry and rebuilding the image.
 	This isn't nice at all for the reason that we interrupt the load balancer service for a while when we restart it so we loose disponibility.
 
+2. <a name="M2"></a>**[M1]**
+	a)With the actual configuration, in order to add a new webapp container:
+	we need to add it manually in the haproxy.cfg file `server s3 <s3>:3000 check cookie s3`.
+	b) We have to add the container to the `/vagrant/ha/scripts/run.sh` script, in order for the `haproxy` container to know about this new node.
+	```
+	sed -i 's/<s3>/$S3_PORT_3000_TCP_ADDR/g' /usr/local/etc/haproxy/haproxy.cfg
+	```
+	c) Next we need to modify the script `provision.sh` in order to automatically start the new container in the `vagrant` VM when typing `vagrant provision`.
+	```
+	docker rm -f s3 2>/dev/null || true
+	docker run -d --name s3 softengheigvd/webapp
+	```
+	d) We need then to inform the `HAProxy` container that there is this new image. We do this by rebuilding the latter's image and re-running it by specifying a link to the fresh webapp image. This is done automatically when we run the `provision.sh` or typing `vagrant provision` in our environment's command line.
+	This is not yet the end, we need also to modify the last line of this provision script. This line is responsible for running the `HAProxy`  container and linking it with the `webapp` containers. So we nee to add a new link to the fresh webapp container.
+	```
+	docker run -d -p 80:80 -p 1936:1936 -p 9999:9999 --link s1 --link s2 --link s3 --name ha softengheigvd/ha
+	```
+	e) Finally we need to reprovision the VM. We can do it by running the `reprovision.sh` script.
+	```./reprovision.sh```or typing `vagrant provision` in our personal environment CLI. 
+This is actually tedious and error prone.
+
 ## <a name="Task1"></a>3.	Task 1 : Add a process supervisor to run several processes
 ## <a name="Task2"></a>4.	Task 2 : Add a tool to manage membership in the web server cluster
 ## <a name="Task3"></a>5.	Task 3 : React to membership changes

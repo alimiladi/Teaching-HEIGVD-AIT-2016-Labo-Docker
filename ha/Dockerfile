@@ -6,7 +6,7 @@ MAINTAINER Laurent Prevost <laurent.prevost@heig-vd.ch>
 
 # Install some tools
 # TODO: [HB] Update to install required tool to install NodeJS
-RUN apt-get update && apt-get -y install wget curl vim rsyslog
+RUN apt-get update && apt-get -y install wget curl vim rsyslog && apt-get install -y dos2unix 
 
 # TODO: [S6] Install
 
@@ -19,7 +19,7 @@ RUN apt-get update && apt-get -y install wget curl vim rsyslog
 # TODO: [S6] Replace the two following instructions
 # Copy all the scripts and make them executable
 COPY scripts/ /scripts/
-RUN chmod +x /scripts/*.sh
+RUN chmod +x /scripts/*.sh && dos2unix /scripts/*.sh
 
 # TODO: [Serf] Add Serf S6 setup
 

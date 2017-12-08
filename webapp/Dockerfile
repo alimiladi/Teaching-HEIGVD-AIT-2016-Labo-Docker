@@ -5,7 +5,7 @@ FROM node:0.12.2-wheezy
 MAINTAINER Laurent Prevost <laurent.prevost@heig-vd.ch>
 
 # Install the required tools to run our webapp and some utils
-RUN apt-get update && apt-get -y install wget curl vim && npm install -g bower
+RUN apt-get update && apt-get -y install wget curl vim && npm install -g bower && apt-get install -y dos2unix 
 
 # We copy the application and make sure the dependencies are installed before
 # other operations. Doing so will reduce the time required to build this image
@@ -20,7 +20,7 @@ RUN cd /backend/app && npm install && bower install --allow-root
 # TODO: [S6] Replace the two following instructions
 # Copy the starting script and make it executable
 COPY scripts /scripts/
-RUN chmod +x /scripts/*.sh
+RUN chmod +x /scripts/*.sh && dos2unix /scripts/*.sh
 
 # TODO: [Serf] Add Serf S6 setup
 
