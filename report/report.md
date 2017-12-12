@@ -108,7 +108,7 @@ Through the different steps of the lab, we will comment the realised manipulatio
 
 1. Stats page
 
-![Task0Stats](/assets/img/Task-0--Stats-page.png)
+![Task0Stats](https://github.com/alimiladi/Teaching-HEIGVD-AIT-2016-Labo-Docker/blob/master/assets/img/Task-0--Stats-page.PNG)
 
 2. Github repo
 
