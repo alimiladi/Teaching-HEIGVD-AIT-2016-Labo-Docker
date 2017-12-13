@@ -38,28 +38,28 @@ Through the different steps of the lab, we will comment the realised manipulatio
 
 2. <a name="M2"></a>**[M2]**
 
-	a)With the actual configuration, in order to add a new webapp container:
+	a)	With the actual configuration, in order to add a new webapp container:
 	we need to add it manually in the haproxy.cfg file `server s3 <s3>:3000 check cookie s3`.
 
-	b) We have to add the container to the `/vagrant/ha/scripts/run.sh` script, in order for the `haproxy` container to know about this new node.
-	```
+	b) 	We have to add the container to the `/vagrant/ha/scripts/run.sh` script, in order for the `haproxy` container to know about this new node.
+	```bash
 	sed -i 's/<s3>/$S3_PORT_3000_TCP_ADDR/g' /usr/local/etc/haproxy/haproxy.cfg
 	```
 
-	c) Next we need to modify the script `provision.sh` in order to automatically start the new container in the `vagrant` VM when typing `vagrant provision`.
-	```
+	c) 	Next we need to modify the script `provision.sh` in order to automatically start the new container in the `vagrant` VM when typing `vagrant provision`.
+	```bash
 	docker rm -f s3 2>/dev/null || true
 	docker run -d --name s3 softengheigvd/webapp
 	```
 
-	d) We need then to inform the `HAProxy` container that there is this new image. We do this by rebuilding the latter's image and re-running it by specifying a link to the fresh webapp image. This is done automatically when we run the `provision.sh` or typing `vagrant provision` in our environment's command line.
+	d) 	We need then to inform the `HAProxy` container that there is this new image. We do this by rebuilding the latter's image and re-running it by specifying a link to the fresh webapp image. This is done automatically when we run the `provision.sh` or typing `vagrant provision` in our environment's command line.
 	This is not yet the end, we need also to modify the last line of this provision script. This line is responsible for running the `HAProxy`  container and linking it with the `webapp` containers. So we nee to add a new link to the fresh webapp container.
-	```
+	```bash
 	docker run -d -p 80:80 -p 1936:1936 -p 9999:9999 --link s1 --link s2 --link s3 --name ha softengheigvd/ha
 	```
 
-	e) Finally we need to reprovision the VM. We can do it by running the `reprovision.sh` script.
-	```./reprovision.sh```or typing `vagrant provision` in our personal environment CLI. 
+	e) 	Finally we need to reprovision the VM. We can do it by running the `reprovision.sh` script.
+	`./reprovision.sh`or typing `vagrant provision` in our personal environment CLI. 
 	
 	This is actually tedious and error prone.
 
@@ -116,6 +116,29 @@ The click [here](https://github.com/alimiladi/Teaching-HEIGVD-AIT-2016-Labo-Dock
 
 
 ## <a name="Task1"></a>3.	Task 1 : Add a process supervisor to run several processes
+1.	Stats page
+
+![Task1Stats](https://github.com/alimiladi/Teaching-HEIGVD-AIT-2016-Labo-Docker/blob/master/assets/img/Task-1--Stats-page.PNG)
+
+2.	
+	i)	**Difficulties for this task**
+	The biggest difficulty we had encountered in this task is to understand what's going on under the hood with an init system.
+	It was pretty much straightforward to understand what an init system is but understanding how it does work was the hardest part.
+
+	ii)	**Why are we installing a process supervisor ?**
+	We found the need to install a process supervisor (init system) in order to be able to run more than one service per container. We needed to do this because we have discovered that we can install a `serf` agent as a service in each container next to it's main service (webapp or load balancer) in order to modify the load balancer's configuration on the fly when we add/remove backend nodes.
+	When searching a liitle bit, we found that an init system is the first process started at the boot of `UNIX-like` system which runs as a deamon. This process is then responsible for starting and stopping the other applications/services of the host machine (in our case host container).
+	After having a look at their [Github repo](https://github.com/just-containers/s6-overlay), we found out that `S6-overlay` needs to be started in each container and there is no more need to start a webapp or haproxy application.
+	```
+	ENTRYPOINT ["/init"]
+	``` 
+	`S6-overlay` then starts the desired services by executing all the `run` scripts under 
+	```bash
+	/etc/services.d/
+	```
+	That's the reason why we have placed our previous running scripts under `/etc/services.d`. We can observe that we have exaclty the same result at the end of the manipulation by taking a look at the `stats page` above.
+
+
 ## <a name="Task2"></a>4.	Task 2 : Add a tool to manage membership in the web server cluster
 ## <a name="Task3"></a>5.	Task 3 : React to membership changes
 ## <a name="Task4"></a>6.	Task 4 : Use a template engine to easily generate configuration files
