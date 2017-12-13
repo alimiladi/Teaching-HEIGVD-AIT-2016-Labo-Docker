@@ -245,7 +245,7 @@ The click [here](https://github.com/alimiladi/Teaching-HEIGVD-AIT-2016-Labo-Dock
 		* [ha](https://github.com/alimiladi/Teaching-HEIGVD-AIT-2016-Labo-Docker/blob/master/logs/task%203/s2-started-ha-logs)
 		* [s1](https://github.com/alimiladi/Teaching-HEIGVD-AIT-2016-Labo-Docker/blob/master/logs/task%203/s2-started-s1-logs)
 		* [s2](https://github.com/alimiladi/Teaching-HEIGVD-AIT-2016-Labo-Docker/blob/master/logs/task%203/s2-started-s2-logs)
-	* Logs directly from the `ha` container in the file ```bash /var/logs/serf.log```
+	* Logs directly from the `ha` container in the file `/var/logs/serf.log`
 		* [ha](https://github.com/alimiladi/Teaching-HEIGVD-AIT-2016-Labo-Docker/blob/master/logs/task%203/logs-from-ha-container)
 
 ## <a name="Task4"></a>6.	Task 4 : Use a template engine to easily generate configuration files
