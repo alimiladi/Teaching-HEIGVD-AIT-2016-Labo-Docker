@@ -140,7 +140,8 @@ The click [here](https://github.com/alimiladi/Teaching-HEIGVD-AIT-2016-Labo-Dock
 
 
 ## <a name="Task2"></a>4.	Task 2 : Add a tool to manage membership in the web server cluster
-1.	**logs**
+1.	**Logs**
+
 	The logs of all the infrastructure components are stored under 
 	```bash
 	/logs/task\ 2/
@@ -152,7 +153,7 @@ The click [here](https://github.com/alimiladi/Teaching-HEIGVD-AIT-2016-Labo-Dock
 	``` 
 	* [Before setting up DNS automatic resolution](https://github.com/alimiladi/Teaching-HEIGVD-AIT-2016-Labo-Docker/blob/master/logs/task%202/Default-DNS-Bridged-order-ha-s1-s2)
 	* [After setting up the custom network and activating embedded DNS](https://github.com/alimiladi/Teaching-HEIGVD-AIT-2016-Labo-Docker/blob/master/logs/task%202/HEIG-DNS-Bridged-order-ha-s1-s2)
-	* Result of the network heig inspection 
+	* Result of the network `heig` inspection 
 	```bash
 	vagrant@ubuntu-14:/vagrant$ docker network inspect heig
 	[
@@ -216,19 +217,37 @@ The click [here](https://github.com/alimiladi/Teaching-HEIGVD-AIT-2016-Labo-Dock
 
 	In the case that we start the webapps first, they are not going to be able to join the cluster as this one is going to be started by the `ha` container which doesn't exist yet.
 
-3.	`Serf` relies on a `GOSSIP` protocol to establish a communication between nodes. Each node runs a `Serf agent` which exchange messages with other agents. 
+3.	**How does Serf works ?**
+
+	`Serf` relies on a `GOSSIP` protocol to establish a communication between nodes. Each node runs a `Serf agent` which exchange messages with other agents. 
 	A membership cluster is aware of all its members, their departures and the arrival of new ones. 
 
+	**Gossip protocol**
+
 	The underlying `GOSSIP` protocol relies on  `SWIM: Scalable Weakly-consistent Infection-style Process Group Membership Protocol` which is built on top of `UDP`. Complete state exchanges are done periodically using `TCP`. Failure detection is acheived by random probing of the running agents of the cluster. If it doesn't ack within a fixed threshold, it is considered as failed.
+
+	**Solutions to solve similar situations ?**
 
 	Another solution to this problem would be to have a centrelized registry which is aware of all the nodes in the cluster and can do updates on the load balancers' container. This method seems to be good but the problem is that we have implemented a single point of failure which is not good.
 
 
 ## <a name="Task3"></a>5.	Task 3 : React to membership changes
 
-1. **docker logs**
+1. **Docker logs**
 	
-	All the logs requested for this task are stored under [task 3](https://github.com/alimiladi/Teaching-HEIGVD-AIT-2016-Labo-Docker/blob/master/logs/task%203)
+	All the logs requested for this task are stored under [task 3](https://github.com/alimiladi/Teaching-HEIGVD-AIT-2016-Labo-Docker/blob/master/logs/task%203) and are divided in sections as described below
+
+	* Only [ha](https://github.com/alimiladi/Teaching-HEIGVD-AIT-2016-Labo-Docker/blob/master/logs/task%203/Only-ha-join) is running
+	* When we started s1
+		* [ha](https://github.com/alimiladi/Teaching-HEIGVD-AIT-2016-Labo-Docker/blob/master/logs/task%203/s1-started-ha-logs)
+		* [s1](https://github.com/alimiladi/Teaching-HEIGVD-AIT-2016-Labo-Docker/blob/master/logs/task%203/s1-started-s1-logs)
+	* When we started s2
+		* [ha](https://github.com/alimiladi/Teaching-HEIGVD-AIT-2016-Labo-Docker/blob/master/logs/task%203/s2-started-ha-logs)
+		* [s1](https://github.com/alimiladi/Teaching-HEIGVD-AIT-2016-Labo-Docker/blob/master/logs/task%203/s2-started-s1-logs)
+		* [s2](https://github.com/alimiladi/Teaching-HEIGVD-AIT-2016-Labo-Docker/blob/master/logs/task%203/s2-started-s2-logs)
+	* Logs directly from the `ha` container in the file ```bash /var/logs/serf.log```
+		* [ha](https://github.com/alimiladi/Teaching-HEIGVD-AIT-2016-Labo-Docker/blob/master/logs/task%203/logs-from-ha-container)
+
 ## <a name="Task4"></a>6.	Task 4 : Use a template engine to easily generate configuration files
 ## <a name="Task5"></a>7.	Task 5 : Generate a new load balancer configuration when membership changes
 ## <a name="Task6"></a>8.	Task 6 : Make the load balancer automatically reload the new configuration
