@@ -116,7 +116,7 @@ The click [here](https://github.com/alimiladi/Teaching-HEIGVD-AIT-2016-Labo-Dock
 
 
 ## <a name="Task1"></a>3.	Task 1 : Add a process supervisor to run several processes
-1.	Stats page
+1.	**Stats page**
 
 ![Task1Stats](https://github.com/alimiladi/Teaching-HEIGVD-AIT-2016-Labo-Docker/blob/master/assets/img/Task-1--Stats-page.PNG)
 
@@ -140,7 +140,95 @@ The click [here](https://github.com/alimiladi/Teaching-HEIGVD-AIT-2016-Labo-Dock
 
 
 ## <a name="Task2"></a>4.	Task 2 : Add a tool to manage membership in the web server cluster
+1.	**logs**
+	The logs of all the infrastructure components are stored under 
+	```bash
+	/logs/task\ 2/
+	logs/
+	`-- task 2
+	    |-- ha
+	    |-- s1
+	    `-- s2
+	``` 
+	* [Before setting up DNS automatic resolution](https://github.com/alimiladi/Teaching-HEIGVD-AIT-2016-Labo-Docker/blob/master/logs/task%202/Default-DNS-Bridged-order-ha-s1-s2)
+	* [After setting up the custom network and activating embedded DNS](https://github.com/alimiladi/Teaching-HEIGVD-AIT-2016-Labo-Docker/blob/master/logs/task%202/HEIG-DNS-Bridged-order-ha-s1-s2)
+	* Result of the network heig inspection 
+	```bash
+	vagrant@ubuntu-14:/vagrant$ docker network inspect heig
+	[
+	    {
+	        "Name": "heig",
+	        "Id": "584686f157ff957ea225642b82c86dc49306e35ff1427e7004f240d4b5fb779a",
+	        "Created": "2017-12-13T09:43:44.98084299Z",
+	        "Scope": "local",
+	        "Driver": "bridge",
+	        "EnableIPv6": false,
+	        "IPAM": {
+	            "Driver": "default",
+	            "Options": {},
+	            "Config": [
+	                {
+	                    "Subnet": "172.18.0.0/16",
+	                    "Gateway": "172.18.0.1"
+	                }
+	            ]
+	        },
+	        "Internal": false,
+	        "Attachable": false,
+	        "Ingress": false,
+	        "ConfigFrom": {
+	            "Network": ""
+	        },
+	        "ConfigOnly": false,
+	        "Containers": {
+	            "0553e90b363ab723ce060e05e70c8700c17b525aa2696fc46afbaa576d8a5062": {
+	                "Name": "s1",
+	                "EndpointID": "3859869f0fa7afaa9c890d7514daf2eecbf982d8fd5390edf4906ee358a8db7e",
+	                "MacAddress": "02:42:ac:12:00:02",
+	                "IPv4Address": "172.18.0.2/16",
+	                "IPv6Address": ""
+	            },
+	            "64bc281ba970cedf7aab6a4415bd6332a6c27b3b6d4ecf94759ed724ded5dbaf": {
+	                "Name": "s2",
+	                "EndpointID": "91d3b299eec81332dfd5d0e7a1735ec2792b869dd40b2a800406fd87819110e0",
+	                "MacAddress": "02:42:ac:12:00:03",
+	                "IPv4Address": "172.18.0.3/16",
+	                "IPv6Address": ""
+	            },
+	            "a77f397c9d32d344109264884c6f5735c8ac04245255a0f0e067a16bf0343c65": {
+	                "Name": "ha",
+	                "EndpointID": "a80cf3148b44ddd32d8dc9f91ab92e9349932b2d5b0da9ca5055d6eca9b0bb53",
+	                "MacAddress": "02:42:ac:12:00:04",
+	                "IPv4Address": "172.18.0.4/16",
+	                "IPv6Address": ""
+	            }
+	        },
+	        "Options": {},
+	        "Labels": {}
+	    }
+	]
+	``` 
+	We can see in the inspection above that the three containers had actually joined the network.
+
+2.	**What's the problem with the current solution ?**
+	
+	The problem with the current solution is that we attach the `serf` cluster to the `ha` container. This is actually an issue because it imposes a precise order when starting the containers. Indeed, we need to start the `ha` container first and then start the backend nodes afterwards.
+
+	In the case that we start the webapps first, they are not going to be able to join the cluster as this one is going to be started by the `ha` container which doesn't exist yet.
+
+3.	`Serf` relies on a `GOSSIP` protocol to establish a communication between nodes. Each node runs a `Serf agent` which exchange messages with other agents. 
+	A membership cluster is aware of all its members, their departures and the arrival of new ones. 
+
+	The underlying `GOSSIP` protocol relies on  `SWIM: Scalable Weakly-consistent Infection-style Process Group Membership Protocol` which is built on top of `UDP`. Complete state exchanges are done periodically using `TCP`. Failure detection is acheived by random probing of the running agents of the cluster. If it doesn't ack within a fixed threshold, it is considered as failed.
+
+	Another solution to this problem would be to have a centrelized registry which is aware of all the nodes in the cluster and can do updates on the load balancers' container. This method seems to be good but the problem is that we have implemented a single point of failure which is not good.
+
+
 ## <a name="Task3"></a>5.	Task 3 : React to membership changes
+
+1. **docker logs**
+	
+	All the logs requested for this task are stored under [task 3](https://github.com/alimiladi/Teaching-HEIGVD-AIT-2016-Labo-Docker/blob/master/logs/task%203)
 ## <a name="Task4"></a>6.	Task 4 : Use a template engine to easily generate configuration files
 ## <a name="Task5"></a>7.	Task 5 : Generate a new load balancer configuration when membership changes
 ## <a name="Task6"></a>8.	Task 6 : Make the load balancer automatically reload the new configuration
