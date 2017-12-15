@@ -305,15 +305,15 @@ The click [here](https://github.com/alimiladi/Teaching-HEIGVD-AIT-2016-Labo-Dock
 
 1.	**Screenshots**
 	* **Starting only the `HAProxy` container without launching any server**
-	![no-servers](https://github.com/alimiladi/Teaching-HEIGVD-AIT-2016-Labo-Docker/blob/master/assets/img/Task-6-No-service-available.PNG)
+	![no-servers](https://github.com/alimiladi/Teaching-HEIGVD-AIT-2016-Labo-Docker/blob/master/assets/img/Task-6--No-service-available.PNG)
 	* **Four running containers**
-	![4containers](https://github.com/alimiladi/Teaching-HEIGVD-AIT-2016-Labo-Docker/blob/master/assets/img/Task-6-four-running-containers.PNG)
+	![4containers](https://github.com/alimiladi/Teaching-HEIGVD-AIT-2016-Labo-Docker/blob/master/assets/img/Task-6--four-running-containers.PNG)
 	* **Removing s1 from the topology**
-	![removed-s1](https://github.com/alimiladi/Teaching-HEIGVD-AIT-2016-Labo-Docker/blob/master/assets/img/Task-6-removing-s1-from-the-topology.PNG)
+	![removed-s1](https://github.com/alimiladi/Teaching-HEIGVD-AIT-2016-Labo-Docker/blob/master/assets/img/Task-6--removing-s1-from-the-topology.PNG)
 	* **s1 does not appear anymore**
-	![s1-disappears](https://github.com/alimiladi/Teaching-HEIGVD-AIT-2016-Labo-Docker/blob/master/assets/img/Task-6-s1-does-not-appear-anymore.PNG)
+	![s1-disappears](https://github.com/alimiladi/Teaching-HEIGVD-AIT-2016-Labo-Docker/blob/master/assets/img/Task-6--s1-does-not-appear-anymore.PNG)
 	* **Restarting the s3 server**
-	![3init](https://github.com/alimiladi/Teaching-HEIGVD-AIT-2016-Labo-Docker/blob/master/assets/img/Task-6-third-container-in-init-state.PNG)
+	![3init](https://github.com/alimiladi/Teaching-HEIGVD-AIT-2016-Labo-Docker/blob/master/assets/img/Task-6--third-container-in-init-state.PNG)
 
 2.	**Feelings about this solution and eventual improvements**
 
