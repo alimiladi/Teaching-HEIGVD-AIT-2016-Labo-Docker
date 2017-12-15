@@ -281,6 +281,26 @@ The click [here](https://github.com/alimiladi/Teaching-HEIGVD-AIT-2016-Labo-Dock
 	Based on the last three logs, we can see that we are generating the output manually in the `cfg` file. What we need to do is to find a mechanism that does this automatically.
 
 ## <a name="Task5"></a>7.	Task 5 : Generate a new load balancer configuration when membership changes
+
+1.	**Generated config file after each container starts**
+
+	* After [ha](https://github.com/alimiladi/Teaching-HEIGVD-AIT-2016-Labo-Docker/blob/master/logs/task%205/cfg-when-ha-joins) joins.
+	* After [s1](https://github.com/alimiladi/Teaching-HEIGVD-AIT-2016-Labo-Docker/blob/master/logs/task%205/cfg-when-s1-joins) joins.
+	* After [s2](https://github.com/alimiladi/Teaching-HEIGVD-AIT-2016-Labo-Docker/blob/master/logs/task%205/cfg-when-s2-joins) joins.
+	* Output of [docker ps](https://github.com/alimiladi/Teaching-HEIGVD-AIT-2016-Labo-Docker/blob/master/logs/task%205/docker-ps).
+	* Output of [docker inspect ha](https://github.com/alimiladi/Teaching-HEIGVD-AIT-2016-Labo-Docker/blob/master/logs/task%205/inspect-ha).
+	* Output of [docker inspect s1](https://github.com/alimiladi/Teaching-HEIGVD-AIT-2016-Labo-Docker/blob/master/logs/task%205/inspect-s1).
+	* Output of [docker inspect s2](https://github.com/alimiladi/Teaching-HEIGVD-AIT-2016-Labo-Docker/blob/master/logs/task%205/inspect-s2).
+
+2.	**List of nodes generated in the ha container**
+
+	* [Nodes](https://github.com/alimiladi/Teaching-HEIGVD-AIT-2016-Labo-Docker/blob/master/logs/task%205/nodes)
+
+3.	**After stopping s1**
+
+	* [Config file](https://github.com/alimiladi/Teaching-HEIGVD-AIT-2016-Labo-Docker/blob/master/logs/task%205/cfg-after-s1-leaves)
+	* [Nodes](https://github.com/alimiladi/Teaching-HEIGVD-AIT-2016-Labo-Docker/blob/master/logs/task%205/nodes-after-s1-leaves)
+
 ## <a name="Task6"></a>8.	Task 6 : Make the load balancer automatically reload the new configuration
 ## <a name="Difficulties"></a>9.	Encountered difficulties
 ## <a name="Conclusion"></a>10.	Conclusion
