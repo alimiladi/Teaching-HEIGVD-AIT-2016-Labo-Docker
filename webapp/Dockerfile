@@ -1,7 +1,6 @@
 # The base image is one of the offical one
 FROM node:0.12.2-wheezy
 
-# TODO: [GEN] Replace with your name and email
 MAINTAINER Ali Miladi <ali.miladi@heig-vd.ch>
 
 # Install the required tools to run our webapp and some utils

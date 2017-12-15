@@ -245,10 +245,41 @@ The click [here](https://github.com/alimiladi/Teaching-HEIGVD-AIT-2016-Labo-Dock
 		* [ha](https://github.com/alimiladi/Teaching-HEIGVD-AIT-2016-Labo-Docker/blob/master/logs/task%203/s2-started-ha-logs)
 		* [s1](https://github.com/alimiladi/Teaching-HEIGVD-AIT-2016-Labo-Docker/blob/master/logs/task%203/s2-started-s1-logs)
 		* [s2](https://github.com/alimiladi/Teaching-HEIGVD-AIT-2016-Labo-Docker/blob/master/logs/task%203/s2-started-s2-logs)
-	* Logs directly from the `ha` container in the file `/var/logs/serf.log`
+
+2.	**Logs directly from the `ha` container in the file `/var/logs/serf.log`**
 		* [ha](https://github.com/alimiladi/Teaching-HEIGVD-AIT-2016-Labo-Docker/blob/master/logs/task%203/logs-from-ha-container)
 
 ## <a name="Task4"></a>6.	Task 4 : Use a template engine to easily generate configuration files
+
+1.	**Accelerating images build**
+
+	According to `Docker`'s documentation, there exists this concept of layering a `Docker` image. Actually each instruction of the `Dockerfile` represents a layer which is added on top of the instruction before. All the instructions except the last one represent read-only layers.
+	Besides, adding a new layer with each `RUN` instruction forces the usage of multiple layers when building the image. This is not good ragarding performance that's the reason why trying to reduce the number of instructions in a `Dockerfile` is a gain of performance and thus, building an image will take less time than before.
+
+	Removing the intermediate layers, invalidating `apt-get` caches and cleaning the downloaded packeges in an image is called [squashing](http://jasonwilder.com/blog/2014/08/19/squashing-docker-images/). This is ususally done for images that grow rapidly large and are to be pushed to a `docker hub` repository.
+
+	Archiving the image to a `tarball` with `docker save <IMAGE NAME> > /home/save.tar` and then reloading it with `docker load < /home/save.tar` is called ìmage [flatening](https://tuhrig.de/flatten-a-docker-container-or-image/). This will save probably the 50% of disk space. 
+
+2.	**Different technique**
+
+	As explained above, there should be the least `RUN` instructions possible to avoid having a lot of layers when building a docker image. This imposes the concatenation of several instructions using the `&&` operator. But using this technique, a run command would probably grow very large and instructions could be repeated or packages downloaded twice if a special care is not given to these instructions. 
+
+	This is the reason why it is a good practice to separate the commands invoked in a single `RUN` instruction with writing them on separate lines, linking them with the `\` operator at the end of each line and trying to sort them alphanumerically to avoid repeating them when the list grows large.
+
+3.	**Logs**
+
+	* `/tmp/haproxy.cfg` file when [ha](https://github.com/alimiladi/Teaching-HEIGVD-AIT-2016-Labo-Docker/blob/master/logs/task%204/tmp-haproxy-config-file-ha-joins) joins the cluster.
+	* `/tmp/haproxy.cfg` file when [s1](https://github.com/alimiladi/Teaching-HEIGVD-AIT-2016-Labo-Docker/blob/master/logs/task%204/tmp-haproxy-config-file-s1-joins) joins the cluster.
+	* `/tmp/haproxy.cfg` file when [s2](https://github.com/alimiladi/Teaching-HEIGVD-AIT-2016-Labo-Docker/blob/master/logs/task%204/tmp-haproxy-config-file-s2-joins) joins the cluster.
+	* The output of [docker ps](https://github.com/alimiladi/Teaching-HEIGVD-AIT-2016-Labo-Docker/blob/master/logs/task%204/docker-ps) command.
+	* The output of [docker inspect ha](https://github.com/alimiladi/Teaching-HEIGVD-AIT-2016-Labo-Docker/blob/master/logs/task%204/inspect-ha) command.
+	* The output of [docker inspect s1](https://github.com/alimiladi/Teaching-HEIGVD-AIT-2016-Labo-Docker/blob/master/logs/task%204/inspect-s1) command.
+	* The output of [docker inspect s2](https://github.com/alimiladi/Teaching-HEIGVD-AIT-2016-Labo-Docker/blob/master/logs/task%204/inspect-s2) command.
+
+4.	**The way we genarate the outputs**
+
+	Based on the last three logs, we can see that we are generating the output manually in the `cfg` file. What we need to do is to find a mechanism that does this automatically.
+
 ## <a name="Task5"></a>7.	Task 5 : Generate a new load balancer configuration when membership changes
 ## <a name="Task6"></a>8.	Task 6 : Make the load balancer automatically reload the new configuration
 ## <a name="Difficulties"></a>9.	Encountered difficulties
