@@ -302,5 +302,44 @@ The click [here](https://github.com/alimiladi/Teaching-HEIGVD-AIT-2016-Labo-Dock
 	* [Nodes](https://github.com/alimiladi/Teaching-HEIGVD-AIT-2016-Labo-Docker/blob/master/logs/task%205/nodes-after-s1-leaves)
 
 ## <a name="Task6"></a>8.	Task 6 : Make the load balancer automatically reload the new configuration
+
+1.	**Screenshots**
+	* **Starting only the `HAProxy` container without launching any server**
+	![no-servers](https://github.com/alimiladi/Teaching-HEIGVD-AIT-2016-Labo-Docker/blob/master/assets/img/Task-6-No-service-available.PNG)
+	* **Four running containers**
+	![4containers](https://github.com/alimiladi/Teaching-HEIGVD-AIT-2016-Labo-Docker/blob/master/assets/img/Task-6-four-running-containers.PNG)
+	* **Removing s1 from the topology**
+	![removed-s1](https://github.com/alimiladi/Teaching-HEIGVD-AIT-2016-Labo-Docker/blob/master/assets/img/Task-6-removing-s1-from-the-topology.PNG)
+	* **s1 does not appear anymore**
+	![s1-disappears](https://github.com/alimiladi/Teaching-HEIGVD-AIT-2016-Labo-Docker/blob/master/assets/img/Task-6-s1-does-not-appear-anymore.PNG)
+	* **Restarting the s3 server**
+	![3init](https://github.com/alimiladi/Teaching-HEIGVD-AIT-2016-Labo-Docker/blob/master/assets/img/Task-6-third-container-in-init-state.PNG)
+
+2.	**Feelings about this solution and eventual improvements**
+
+	This solution works well and have exactly the correct behaviour. This is really a good solution for a small network or just for the lab setup. 
+	Nevertheless, it is not a recommanded solution for a production environment. The reason behind this is that this system is not highly available since the `HAProxy` container doesn't answer for a short time when an event (a node joins/leaves the cluster) occurs. 
+
+	The solution proposed to solve this, after a little research on the web we found :
+	* **Dropping the SYN packets or delaying them**
+	The version of `HAProxy` that we work with does not support zero downtime restarts or reloads of configuration. It actually supports fast reloads. That consists of launching a fresh `HAProxy` instance and rebinding the same ports used in the old instance. This is typically done by a `SO_REUSEPORT` to bind the same port in the new instance. This technique is close to the zero downtime but still have some latency due to the way that linux handles multiple accepting processes in the same port.
+
+		* The first solution propposed by the `HAProxy`'s maintainer is to drop the `TCP SYN` packets during the restart of `HAProxy`. This might be a good solution as TCP will recover immediately but unfortunately, there is an initial timeout of one second which is hardoded in the linux kernel.
+
+		* As dropping `TCP SYN` packets is not necessarily a good solution due to the fact that it depends on the client's implementation of TCP, it turns out the [`yelp`](https://engineeringblog.yelp.com/2015/04/true-zero-downtime-haproxy-reloads.html) engineers found another suitable solution for this problem. It consists of delaying the `SYN` packets until the reload is done. In order for them to do this, they manipulated `Linux Queuing Disciplines` ([qdisc](http://lartc.org/howto/lartc.qdisc.html)) which consists of manipulating the way how packets are handled within the linux kernel. 
+
+		They ended up using `plug qdisc` associated to an `iptables` rule in order to delay the `SYN` packets and then only have the latency of the `HAProxy` reload.
+
+
 ## <a name="Difficulties"></a>9.	Encountered difficulties
+
+This lab was quite simple to realize thanks to the extremely detailed steps  and explanations. The setup was also really simple to use as everything is furnished to us. In addition, the references were really helpful and give a lot of deep explanations. 
+
+Besides, the most difficult part was to understand deep `docker` necanisms and how it works. Moreover, `haproxy` congiguration and optimization took also a non-negligeable time. The `s6-overlay` understanding was quite time-consuming too. 
+
 ## <a name="Conclusion"></a>10.	Conclusion
+
+We have successfully fullfilled all the tasks of this lab. 
+In the end, we really become more familiar with docker commands, dockerized environments and have deep knowledge of a virtualized infrastructure. 
+
+We have also mastered the HAProxy load balancer and it's configuration and usage in a dockerized environment.
